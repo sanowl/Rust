@@ -1,4 +1,4 @@
-use num_traits::CheckedAdd;
+use num_traits::ops::checked::CheckedAdd;
 
 pub fn binary_to_decimal(binary: &str) -> Option<u128> {
     if binary.len() > 128 {
@@ -9,7 +9,7 @@ pub fn binary_to_decimal(binary: &str) -> Option<u128> {
     for bit in binary.chars().rev() {
         match bit {
             '1' => {
-                if let Some(sum) = num.checked_add(&idx_val) {
+                if let Some(sum) = num.checked_add(*&idx_val) {
                     num = sum;
                 } else {
                     return None;
@@ -20,8 +20,9 @@ pub fn binary_to_decimal(binary: &str) -> Option<u128> {
         }
         idx_val <<= 1;
     }
-    Some(num)
+    Some(num as u128)
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -60,7 +61,6 @@ mod tests {
             ),
             Some(79_228_162_514_264_337_593_543_950_335u128)
         );
-
         // 128 bits
         assert_eq!(
             binary_to_decimal(
