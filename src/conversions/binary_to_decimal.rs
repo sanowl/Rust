@@ -4,12 +4,12 @@ pub fn binary_to_decimal(binary: &str) -> Option<u128> {
     if binary.len() > 128 {
         return None;
     }
-    let mut num = 0;
-    let mut idx_val = 1;
+    let mut num = 0u128;
+    let mut idx_val = 1u128;
     for bit in binary.chars().rev() {
         match bit {
             '1' => {
-                if let Some(sum) = num.checked_add(*&idx_val) {
+                if let Some(sum) = num.checked_add(idx_val) {
                     num = sum;
                 } else {
                     return None;
@@ -20,7 +20,7 @@ pub fn binary_to_decimal(binary: &str) -> Option<u128> {
         }
         idx_val <<= 1;
     }
-    Some(num as u128)
+    Some(num)
 }
 
 
